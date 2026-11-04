@@ -1,0 +1,43 @@
+.track {
+  --w: 38px;
+  --h: 22px;
+  --pad: 2px;
+  position: relative;
+  flex-shrink: 0;
+  width: var(--w);
+  height: var(--h);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--switch-off);
+  transition: background 160ms var(--ease);
+}
+
+.sm {
+  --w: 32px;
+  --h: 18px;
+}
+
+.track[data-on] {
+  background: var(--accent);
+}
+
+.track:disabled {
+  opacity: 0.45;
+}
+
+.knob {
+  position: absolute;
+  top: var(--pad);
+  left: var(--pad);
+  width: calc(var(--h) - var(--pad) * 2);
+  height: calc(var(--h) - var(--pad) * 2);
+  border-radius: 50%;
+  background: var(--knob);
+  box-shadow: var(--shadow-sm);
+  transition: transform 180ms var(--ease);
+}
+
+.track[data-on] .knob {
+  transform: translateX(calc(var(--w) - var(--h)));
+}

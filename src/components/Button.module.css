@@ -1,0 +1,103 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 120ms var(--ease), border-color 120ms var(--ease), color 120ms var(--ease);
+}
+
+.button:disabled {
+  opacity: 0.5;
+}
+
+.primary {
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+.primary:not(:disabled):hover {
+  background: var(--accent-hover);
+}
+
+.secondary {
+  background: var(--bg-raised);
+  border-color: var(--border);
+  color: var(--text);
+}
+.secondary:not(:disabled):hover {
+  background: var(--bg-hover);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--text-2);
+}
+.ghost:not(:disabled):hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.danger {
+  background: var(--bg-raised);
+  border-color: var(--border);
+  color: var(--danger);
+}
+.danger:not(:disabled):hover {
+  background: var(--danger-soft);
+}
+
+.dashed {
+  height: 36px;
+  background: transparent;
+  border: 1px dashed var(--border-strong);
+  color: var(--text);
+}
+.dashed:not(:disabled):hover {
+  background: var(--bg-hover);
+}
+
+.link {
+  height: auto;
+  padding: 0;
+  background: transparent;
+  color: var(--accent-text);
+}
+.link:not(:disabled):hover {
+  text-decoration: underline;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-3);
+  transition: background 120ms var(--ease), color 120ms var(--ease);
+}
+.iconButton:not(:disabled):hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.round {
+  border-radius: 50%;
+  background: var(--bg-raised);
+  box-shadow: 0 0 0 1px var(--border);
+  color: var(--text);
+}
+.round:not(:disabled):hover {
+  background: var(--bg-raised);
+  box-shadow: 0 0 0 1px var(--border-strong);
+}

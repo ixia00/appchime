@@ -1,0 +1,114 @@
+:root {
+  color-scheme: light;
+
+  --bg: #ffffff;
+  --bg-sidebar: #f2f2f5;
+  --bg-subtle: #f7f7f9;
+  --bg-segment: #ebebef;
+  --bg-raised: #ffffff;
+  --bg-hover: rgba(0, 0, 0, 0.045);
+  --bg-selected: #ffffff;
+  --bg-overlay: rgba(20, 20, 24, 0.32);
+
+  --border: #dcdce0;
+  --border-subtle: #e8e8ec;
+  --border-strong: #c9c9cf;
+
+  --text: #1d1d1f;
+  --text-2: #3a3a3f;
+  --text-3: #5f5f64;
+  --text-on-accent: #ffffff;
+
+  --accent: #2f6feb;
+  --accent-hover: #2560d6;
+  --accent-text: #2457c5;
+  --accent-soft: #eaf1fe;
+  --danger: #b3261e;
+  --danger-soft: #fdecea;
+  --warning-soft: #fff4dc;
+  --warning-text: #7a4b00;
+
+  --switch-off: #c7c7cc;
+  --knob: #ffffff;
+  --focus-ring: 0 0 0 3px rgba(47, 111, 235, 0.35);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.06), 0 0 0 1px var(--border);
+  --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.06);
+
+  --avatar-0-bg: #e8eeff;  --avatar-0-fg: #2f57c4;
+  --avatar-1-bg: #fdebdd;  --avatar-1-fg: #a1501e;
+  --avatar-2-bg: #e3f2ea;  --avatar-2-fg: #2a6646;
+  --avatar-3-bg: #f1e8fd;  --avatar-3-fg: #6a3fb8;
+  --avatar-4-bg: #fde8ef;  --avatar-4-fg: #a8325c;
+  --avatar-5-bg: #e4f1f6;  --avatar-5-fg: #22637a;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", "Apple SD Gothic Neo",
+    "Malgun Gothic", "Hiragino Sans", "Yu Gothic UI", system-ui, sans-serif;
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-md: 14px;
+  --text-lg: 15px;
+  --text-xl: 20px;
+
+  --sidebar-width: 260px;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #1e1e20;
+  --bg-sidebar: #19191b;
+  --bg-subtle: #262629;
+  --bg-segment: #2c2c30;
+  --bg-raised: #2a2a2e;
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  --bg-selected: #2c2c30;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
+  --border: #36363b;
+  --border-subtle: #2f2f33;
+  --border-strong: #48484e;
+  --text: #f2f2f4;
+  --text-2: #d2d2d7;
+  --text-3: #a2a2a9;
+  --accent: #3b78f0;
+  --accent-hover: #4a84f3;
+  --accent-text: #8cb2ff;
+  --accent-soft: #223152;
+  --danger: #ff8b80;
+  --danger-soft: #3d2322;
+  --warning-soft: #3b2f15;
+  --warning-text: #f3cf86;
+  --switch-off: #4a4a50;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 0 0 1px var(--border);
+  --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --avatar-0-bg: #25335a;  --avatar-0-fg: #a9c1ff;
+  --avatar-1-bg: #48301f;  --avatar-1-fg: #f6bf95;
+  --avatar-2-bg: #213d2f;  --avatar-2-fg: #9ad6b5;
+  --avatar-3-bg: #362a4f;  --avatar-3-fg: #cdb5f6;
+  --avatar-4-bg: #482535;  --avatar-4-fg: #f5abc5;
+  --avatar-5-bg: #1f3a45;  --avatar-5-fg: #9fd3e6;
+}
+:root[data-accent="purple"] { --accent: #7c4dd6; --accent-hover: #6a3dc2; --accent-text: #6638bf; --accent-soft: #f1ebfc; --focus-ring: 0 0 0 3px rgba(124, 77, 214, 0.35); }
+:root[data-accent="pink"] { --accent: #c23069; --accent-hover: #ab2659; --accent-text: #b3285e; --accent-soft: #fdebf2; --focus-ring: 0 0 0 3px rgba(194, 48, 105, 0.35); }
+:root[data-accent="orange"] { --accent: #b85410; --accent-hover: #a0480c; --accent-text: #a84a12; --accent-soft: #fdf0e6; --focus-ring: 0 0 0 3px rgba(184, 84, 16, 0.35); }
+:root[data-accent="green"] { --accent: #1e8050; --accent-hover: #196d44; --accent-text: #1b7046; --accent-soft: #e5f5ec; --focus-ring: 0 0 0 3px rgba(30, 128, 80, 0.35); }
+
+:root[data-theme="dark"][data-accent="purple"] { --accent: #7d52e0; --accent-hover: #8d66e8; --accent-text: #c4a8ff; --accent-soft: #2f2550; }
+:root[data-theme="dark"][data-accent="pink"] { --accent: #c9356f; --accent-hover: #d64b82; --accent-text: #ff9fc3; --accent-soft: #4a2234; }
+:root[data-theme="dark"][data-accent="orange"] { --accent: #c25e1c; --accent-hover: #d06e2c; --accent-text: #ffb68a; --accent-soft: #4a2d18; }
+:root[data-theme="dark"][data-accent="green"] { --accent: #22874f; --accent-hover: #2a9a5c; --accent-text: #84d9ad; --accent-soft: #1e3d2d; }
