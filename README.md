@@ -117,61 +117,14 @@ AppChime을 종료한 뒤 새 버전을 설치하면 돼요. 등록한 앱과 �
 
 ---
 
-## 개발자용
+## 개발
 
-Tauri 2 (Rust) + React (TypeScript)로 만들었어요.
+[Tauri 2](https://tauri.app) (Rust) + React (TypeScript)
 
-### 준비
-- [Rust](https://rustup.rs), [Node.js](https://nodejs.org) 20 이상
-- 맥: `xcode-select --install`
-- 윈도우: [Tauri 사전 준비](https://tauri.app/start/prerequisites/) 참고 (C++ Build Tools)
-
-### 실행 / 빌드
-
-```bash
+​```bash
 npm install
-npm run app:dev      # 개발 모드 (저장하면 바로 반영)
-npm run app:build    # 설치 파일 만들기 → src-tauri/target/release/bundle/
-```
-
-테스트
-
-```bash
-npm run typecheck
-cd crates/app-watch && cargo test
-cd src-tauri && cargo test
-```
-
-### 릴리스 만들기
-
-버전을 올린 뒤(`package.json`, `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` 세 곳) 태그를 올리면, GitHub Actions가 맥·윈도우 설치 파일을 만들어 Releases에 **초안**으로 올려요.
-
-```bash
-git tag v0.1.1
-git push origin v0.1.1
-```
-
-확인 후 Releases에서 **Publish release**를 누르면 공개돼요.
-
-### 폴더 구조
-
-```
-src/                   화면 (React)
-  features/            메인 창(rules), 앱 추가(addApp), 일반 설정(settings)
-  components/          공용 부품 (Switch, Button, Dialog …)
-  store/appStore.ts    화면 상태 + 백엔드 호출
-  i18n/                문구 (ko, en, ja)
-  styles/tokens.css    색 · 간격 · 테마
-src-tauri/src/         본체 (Rust)
-  commands.rs          화면에서 부르는 명령
-  engine.rs            어떤 소리를 틀지 결정
-  actions.rs           앱 이벤트 처리, 메인 창 대기
-  audio.rs             재생
-  config/              설정 저장
-  tray.rs              메뉴 막대 / 트레이
-  install.rs           (맥) dmg에서 실행 시 응용 프로그램 폴더로 이동
-crates/app-watch/      앱 실행·종료 감지, 앱 목록, 창 감지, 아이콘 읽기
-```
+npm run app:dev
+​`````
 
 ### 메모
 - 앱 감지는 1초 간격으로 프로세스 목록을 비교해요 (이름·경로만 읽어서 가벼워요)
