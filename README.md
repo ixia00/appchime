@@ -1,134 +1,179 @@
-# AppChime
+<p align="center">
+  <img src="app-icon.png" width="128" alt="AppChime 아이콘">
+</p>
 
-앱이 **켜지거나 꺼질 때** 지정한 소리를 재생하는 메뉴 막대(트레이) 앱입니다. macOS · Windows 지원.
+<h1 align="center">AppChime</h1>
 
-- 앱마다 "켜질 때 / 꺼질 때" 소리를 따로 켜고 끔
-- 소리 파일 여러 개 + 재생 방식: 고정 / 랜덤(연속 중복 없음) / 순서대로
-- 앱별 볼륨, 미리듣기, 파일 끌어다 놓기, 순서 바꾸기
-- 메뉴 막대에서 전체 소리 켜기/끄기, 원하면 전역 단축키 지정
-- 중복 재생 방지, 로그인 시 자동 실행, 다크 모드, 한국어·영어·일본어
+<p align="center">
+  앱이 켜지거나 꺼질 때 원하는 소리를 재생하는 작은 프로그램<br>
+  macOS · Windows
+</p>
 
----
+<p align="center">
+  <a href="https://github.com/ixia00/appchime/releases/latest"><b>⬇ 다운로드</b></a>
+</p>
 
-## 개발 환경 준비 (맥 기준, 처음 한 번)
-
-1. **Xcode 명령줄 도구**: 터미널에서 `xcode-select --install`
-2. **Rust**: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
-3. **Node.js 20 이상**: https://nodejs.org 에서 LTS 설치
-4. VS Code에서 이 폴더를 열면 추천 확장(Tauri, rust-analyzer)을 설치하라고 뜹니다. 설치하세요.
-
-윈도우에서 개발할 때는 Rust와 Node 외에 "Microsoft C++ Build Tools"가 필요합니다
-(https://tauri.app/start/prerequisites/ 참고).
-
-## 실행해 보기
-
-```bash
-npm install          # 처음 한 번
-npm run app:dev      # 개발 모드로 실행 (코드 저장하면 화면이 바로 바뀜)
-```
-
-- 첫 실행은 Rust 라이브러리를 받고 컴파일하느라 몇 분 걸립니다. 다음부터는 빠릅니다.
-- 실행하면 메뉴 막대에 스피커 아이콘이 생기고, 등록한 앱이 없으면 설정 창이 열립니다.
-- 화면(React)만 고칠 땐 저장하면 바로 반영되고, Rust 코드를 고치면 자동으로 다시 빌드·재시작됩니다.
-- 개발 모드에서는 "로그인 시 자동 실행"이 실제로 등록되지 않습니다 (개발용 파일이 등록되는 것을 막기 위해).
-
-### 테스트
-
-```bash
-npm run typecheck                                  # 화면 타입 검사
-cd crates/app-watch && cargo test                  # 앱 감지 모듈
-cd src-tauri && cargo test                         # 본체 (설정·규칙·소리 파일)
-```
-
-## 설치 파일 만들기
-
-**내 컴퓨터에서**: `npm run app:build` → `src-tauri/target/release/bundle/` 에 맥은 `.dmg`가 생깁니다.
-
-**GitHub에서 맥·윈도우 둘 다**: 태그를 올리면 자동으로 만들어서 Releases에 초안으로 올립니다.
-
-```bash
-git tag v0.1.0
-git push origin v0.1.0
-```
-
-저장소의 **Actions** 탭에서 진행 상황을 볼 수 있고, 끝나면 **Releases**에 초안이 생깁니다.
-확인 후 *Publish release* 를 누르면 공개됩니다. 버전을 올릴 때는 `package.json`,
-`src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` 의 `version`을 같이 바꾸세요.
-
-> 서명하지 않은 앱은 처음 열 때 경고가 뜹니다.
-> 맥: 앱을 우클릭 → 열기 (또는 시스템 설정 › 개인정보 보호 및 보안 › "그래도 열기")
-> 윈도우: "추가 정보" → "실행"
-> 정식 배포 시에는 Apple Developer 서명·공증을 권장합니다 (`release.yml` 상단 설명 참고).
+> **EN** — AppChime plays a sound of your choice when an app launches or quits. Free, for macOS and Windows.
+> **JA** — AppChime は、アプリの起動時・終了時に好きなサウンドを再生する macOS / Windows 用の無料ツールです。
 
 ---
 
-## 폴더 구조
+## 이런 걸 할 수 있어요
 
-```
-appchime/
-├─ src/                        화면 (React + TypeScript)
-│  ├─ App.tsx                  전체 레이아웃
-│  ├─ features/
-│  │  ├─ rules/                메인 창: 앱 목록, 상세, 켜질/꺼질 때 카드, 소리 목록, 볼륨
-│  │  ├─ addApp/               앱 추가 창
-│  │  └─ settings/             일반 설정 창, 단축키 입력
-│  ├─ components/              공용 부품: Switch, Button, Dialog, SegmentedControl, Icon …
-│  ├─ store/appStore.ts        화면 상태 + 백엔드 호출 (모든 동작이 여기 모여 있음)
-│  ├─ lib/                     타입, 백엔드 호출 목록(api.ts), 단축키·형식 도우미
-│  ├─ i18n/                    문구 (ko.ts 기준, en.ts, ja.ts)
-│  ├─ styles/tokens.css        색·간격·글꼴 (라이트/다크)
-│  └─ theme.ts                 다크 모드 적용
-│
-├─ src-tauri/                  본체 (Rust)
-│  ├─ src/
-│  │  ├─ lib.rs                시작 순서, 플러그인, 구조 그림
-│  │  ├─ commands.rs           화면에서 부르는 명령
-│  │  ├─ state.rs              설정 보관 + 변경 시 저장·알림·메뉴 갱신
-│  │  ├─ engine.rs             "어떤 소리를 틀지" 결정 (고정/랜덤/순서, 중복 방지)
-│  │  ├─ audio.rs              재생 스레드
-│  │  ├─ sounds.rs             소리 파일 보관함 (복사·검사·삭제)
-│  │  ├─ config/               설정 데이터 모양과 파일 저장
-│  │  ├─ tray.rs, i18n.rs      메뉴 막대 아이콘·메뉴와 그 문구
-│  │  ├─ shortcut.rs           전역 단축키
-│  │  ├─ autostart.rs          로그인 시 자동 실행
-│  │  ├─ window.rs, actions.rs 창 열기/숨기기, 공통 동작
-│  │  └─ error.rs              오류 종류
-│  ├─ icons/                   앱 아이콘, 메뉴 막대 아이콘
-│  └─ tauri.conf.json          앱 이름, 창 크기, 번들 설정
-│
-├─ crates/app-watch/           앱 감지 모듈 (따로 테스트 가능)
-│  └─ src/  watcher.rs(켜짐/꺼짐 감지) · identity.rs(앱 비교) · catalog/(앱 목록)
-│
-└─ .github/workflows/          ci.yml(검사), release.yml(설치 파일 만들기)
-```
+- **앱마다 다른 소리**: 보컬로이드 에디터엔 이 목소리, 그림 프로그램엔 저 효과음
+- **켜질 때 / 꺼질 때**를 따로 켜고 끄고, 소리도 따로 지정
+- **메인 창이 뜰 때 재생**: 로딩 화면 말고, 실제 작업 화면이 나타나는 순간에 재생
+- 소리 여러 개 등록 후 **고정 / 무작위 / 순서대로** 재생
+- 앱별 볼륨, 미리듣기, 파일 끌어다 놓기
+- 메뉴 막대(트레이)에서 **전체 소리 켜기/끄기**, 원하면 단축키 지정
+- 시스템 시작 시 자동 실행, 다크 모드, 강조 색상
+- 한국어 · English · 日本語
 
-## 자주 고칠 곳
+평소엔 메뉴 막대(맥) / 트레이(윈도우)에 작은 아이콘으로만 있고, 바탕화면이나 Dock·작업 표시줄엔 나타나지 않아요.
 
-| 하고 싶은 것 | 고칠 곳 |
+지원하는 소리 파일: `mp3` `wav` `ogg` `flac` `m4a` `aac` (파일당 최대 50MB)
+
+---
+
+## 설치
+
+[Releases](https://github.com/ixia00/appchime/releases/latest) 페이지 아래 **Assets**에서 받으세요.
+
+| 컴퓨터 | 받을 파일 |
 |---|---|
-| 화면 문구 | `src/i18n/ko.ts` (+ `en.ts`, `ja.ts`) |
-| 메뉴 막대 문구 | `src-tauri/src/i18n.rs` |
-| 색·모서리·글꼴 | `src/styles/tokens.css` |
-| 테마 추가 | `tokens.css`에 `:root[data-theme="..."]` 블록 + `src/theme.ts` |
-| 앱 이름·번들 ID | `src-tauri/tauri.conf.json` 의 `productName`, `identifier` (배포 전에 꼭 본인 것으로) |
-| 감지 간격 (기본 1초) | `src-tauri/src/lib.rs` 의 `WATCH_INTERVAL` |
-| 받는 소리 형식 | `src-tauri/src/sounds.rs` 의 `SUPPORTED_EXTENSIONS` |
-| 설정 항목 추가 | `src-tauri/src/config/mod.rs` `Settings` + `src/lib/types.ts` + 설정 창 |
+| Mac (M1·M2·M3 등 Apple 칩) | `AppChime_x.x.x_aarch64.dmg` |
+| Mac (인텔) | `AppChime_x.x.x_x64.dmg` |
+| Windows 10 / 11 | `AppChime_x.x.x_x64-setup.exe` |
 
-설정 파일 위치 (문제 생기면 지우면 초기화됨):
-- 맥: `~/Library/Application Support/com.appchime.app/config.json`, 소리 파일은 같은 폴더의 `sounds/`
-- 윈도우: `%APPDATA%\com.appchime.app\config.json`, 소리 파일은 `%APPDATA%\com.appchime.app\sounds\`
+> AppChime은 개인이 만든 무료 프로그램이라 유료 개발자 서명이 없어요. 그래서 처음 설치할 때 경고가 뜨는데, 아래 방법대로 하면 정상적으로 쓸 수 있어요.
 
-## 동작 방식 메모
+### Mac
 
-- **감지**: 1초마다 프로세스 목록을 비교합니다. CPU·메모리 정보는 읽지 않고 이름·경로만 읽어서 가볍습니다.
-  같은 실행 파일이 여러 개 떠도 "0개→1개"만 켜짐, "1개→0개"만 꺼짐으로 보므로 소리가 반복되지 않습니다.
-- **소리 파일**은 앱 보관함으로 복사해 쓰므로 원본을 옮겨도 계속 재생됩니다.
-- **오디오 장치**는 재생할 때만 열고 5초 동안 조용하면 닫습니다. 이어폰을 바꿔도 다음 재생부터 새 장치로 나옵니다.
+1. `.dmg`를 열고 **AppChime을 응용 프로그램 폴더로 끌어다 놓기**
+   (dmg 창에서 바로 실행해도 알아서 응용 프로그램 폴더로 옮겨진 뒤 다시 켜져요)
+2. 응용 프로그램 폴더에서 AppChime을 **오른쪽 클릭 → 열기 → 열기**
+   - "확인되지 않은 개발자" 경고 때문에 열기 버튼이 없으면:
+     **시스템 설정 → 개인정보 보호 및 보안** → 아래쪽 "AppChime이(가) 차단되었습니다" 옆 **그래도 열기**
+3. 화면 위쪽 메뉴 막대에 🔊 아이콘이 생기면 성공
+4. **손쉬운 사용 권한 켜기** (메인 창 감지에 필요)
+   설정 창에서 **권한 허용**을 누르거나, **시스템 설정 → 개인정보 보호 및 보안 → 손쉬운 사용**에서 AppChime 켜기
 
-## 앞으로 하면 좋은 것
+### Windows
 
-- 실제 앱 아이콘 표시 (지금은 이름 글자로 대신함, `src/components/AppAvatar.tsx`만 바꾸면 됨)
-- 맥에서 시스템 알림(NSWorkspace) 방식으로 감지해 1초 지연 없애기
-- 테마 선택, 강조색 선택 (설정 값 `theme`은 이미 있음)
-- Microsoft Store 앱(UWP) 지원
+1. 다운로드할 때 브라우저가 경고하면
+   - Edge: 다운로드 목록에서 `…` → **유지** → **자세히 표시** → **그래도 유지**
+   - Chrome: **유지** → **그래도 다운로드**
+2. 설치 파일 실행 → "Windows의 PC 보호" 창이 뜨면 **추가 정보 → 실행**
+3. 설치가 끝나면 시계 옆 **`^`(숨겨진 아이콘)** 안에 🔊 아이콘이 생겨요
+   - 아이콘을 작업 표시줄로 끌어다 놓으면 항상 보여요
+
+---
+
+## 사용법
+
+1. 메뉴 막대 / 트레이의 🔊 아이콘 → **설정 열기…**
+2. **앱 추가** → 실행 중인 앱이나 설치된 앱에서 고르기 (목록에 없으면 **직접 선택…**)
+3. **실행 시 소리 재생** 카드에서 **소리 파일 추가** (파일을 카드 위로 끌어다 놓아도 돼요)
+4. 재생 방식, 재생 시점, 볼륨 정하기
+5. 끝! 창을 닫아도 AppChime은 계속 켜져 있어요
+
+**재생 시점**
+- **메인 창 표시 시** (기본): 로딩 화면이 지나고 실제 창이 뜰 때 재생
+- **실행 즉시**: 아이콘을 누르자마자 재생
+- 로딩 화면에서 소리가 먼저 나는 앱이면 **추가 지연**을 1~3초 정도 주세요
+
+**전체 소리 끄기**: 🔊 아이콘 → **소리 켜짐** 체크 해제. 회의나 방송 중에 편해요.
+
+---
+
+## 자주 묻는 질문
+
+**소리가 실행하자마자 나요 (창이 뜰 때가 아니라)**
+맥이라면 손쉬운 사용 권한이 꺼져 있을 가능성이 커요. 권한이 없으면 창을 확인할 수 없어서 실행 즉시 재생해요. 설치 4단계를 확인해 주세요.
+
+**컴퓨터를 켰는데 자동으로 안 켜져요**
+- 맥: **시스템 설정 → 일반 → 로그인 항목 및 확장 프로그램**의 "백그라운드에서 허용"에서 AppChime이 켜져 있는지 확인
+- 윈도우: 윈도우가 시작 프로그램을 일부러 몇 초~몇십 초 늦게 켜요. 잠깐 기다린 뒤 `^` 안을 확인해 보세요. 그래도 없으면 작업 관리자(`Ctrl + Shift + Esc`) → **시작 앱**에서 AppChime이 **사용**인지 확인
+- 그래도 안 되면 AppChime 일반 설정에서 **시스템 시작 시 자동 실행**을 껐다가 다시 켜 주세요
+
+**앱 추가 목록에 쓰려는 앱이 없어요**
+**직접 선택…**을 눌러 앱(맥은 `.app`, 윈도우는 `.exe`)을 골라 주세요.
+
+**소리 파일 이름이 깨져서 보여요 (압축 파일)**
+맥 Finder나 윈도우 기본 기능으로 일본어·한자 이름이 들어간 압축을 풀면 이름이 깨질 수 있어요. [반디집](https://www.bandisoft.com/bandizip/)으로 열어 보세요.
+
+**추가한 소리 파일 원본을 지워도 되나요?**
+네. AppChime은 추가한 파일을 자기 폴더에 복사해 두기 때문에, 원본을 옮기거나 지워도 계속 재생돼요.
+
+**AppChime을 완전히 지우고 싶어요**
+1. 🔊 아이콘 → **AppChime 종료**
+2. 맥: 응용 프로그램 폴더에서 AppChime 삭제 / 윈도우: 설정 → 앱 → AppChime 제거
+3. 설정과 소리 파일까지 지우려면 아래 폴더도 삭제
+   - 맥: `~/Library/Application Support/com.ixia00.appchime`
+   - 윈도우: `%APPDATA%\com.ixia00.appchime`
+
+**업데이트는 어떻게 하나요?**
+AppChime을 종료한 뒤 새 버전을 설치하면 돼요. 등록한 앱과 소리 설정은 그대로 남아요.
+
+---
+
+## 개발자용
+
+Tauri 2 (Rust) + React (TypeScript)로 만들었어요.
+
+### 준비
+- [Rust](https://rustup.rs), [Node.js](https://nodejs.org) 20 이상
+- 맥: `xcode-select --install`
+- 윈도우: [Tauri 사전 준비](https://tauri.app/start/prerequisites/) 참고 (C++ Build Tools)
+
+### 실행 / 빌드
+
+```bash
+npm install
+npm run app:dev      # 개발 모드 (저장하면 바로 반영)
+npm run app:build    # 설치 파일 만들기 → src-tauri/target/release/bundle/
+```
+
+테스트
+
+```bash
+npm run typecheck
+cd crates/app-watch && cargo test
+cd src-tauri && cargo test
+```
+
+### 릴리스 만들기
+
+버전을 올린 뒤(`package.json`, `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` 세 곳) 태그를 올리면, GitHub Actions가 맥·윈도우 설치 파일을 만들어 Releases에 **초안**으로 올려요.
+
+```bash
+git tag v0.1.1
+git push origin v0.1.1
+```
+
+확인 후 Releases에서 **Publish release**를 누르면 공개돼요.
+
+### 폴더 구조
+
+```
+src/                   화면 (React)
+  features/            메인 창(rules), 앱 추가(addApp), 일반 설정(settings)
+  components/          공용 부품 (Switch, Button, Dialog …)
+  store/appStore.ts    화면 상태 + 백엔드 호출
+  i18n/                문구 (ko, en, ja)
+  styles/tokens.css    색 · 간격 · 테마
+src-tauri/src/         본체 (Rust)
+  commands.rs          화면에서 부르는 명령
+  engine.rs            어떤 소리를 틀지 결정
+  actions.rs           앱 이벤트 처리, 메인 창 대기
+  audio.rs             재생
+  config/              설정 저장
+  tray.rs              메뉴 막대 / 트레이
+  install.rs           (맥) dmg에서 실행 시 응용 프로그램 폴더로 이동
+crates/app-watch/      앱 실행·종료 감지, 앱 목록, 창 감지, 아이콘 읽기
+```
+
+### 메모
+- 앱 감지는 1초 간격으로 프로세스 목록을 비교해요 (이름·경로만 읽어서 가벼워요)
+- 메인 창 감지: 맥은 손쉬운 사용 API로 "표준 창" 여부, 윈도우는 제목 표시줄이 있는 최상위 창 여부로 판단해요
+- 개발 모드에서는 자동 실행 등록, dmg 이동, 우클릭 메뉴 차단이 꺼져 있어요
