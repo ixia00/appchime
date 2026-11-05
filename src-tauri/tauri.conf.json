@@ -30,7 +30,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": ["nsis", "dmg", "app"],
     "category": "Utility",
     "shortDescription": "Play a sound when an app opens or closes",
     "icon": [
